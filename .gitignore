@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Remove vscode and build dir
+build/
+.vscode/
