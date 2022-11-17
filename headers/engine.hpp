@@ -1,84 +1,27 @@
-#ifndef NIBBLES_01_ENGINE_HPP
-#define NIBBLES_01_ENGINE_HPP
+#pragma once
 
-#include "snakesection.hpp"
-#include "apple.hpp"
-#include "wall.hpp"
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <vector>
-#include <deque>
-#include <fstream>
+#include "state.hpp"
 
-using namespace sf;
-using namespace std;
+#include <memory> 
 
 class Engine {
 private:
-    // Window
-    Vector2f resolution;
-    RenderWindow window;
-    const unsigned int FPS = 144;
-    static const Time TimePerFrame;
+    std::shared_ptr<sf::RenderWindow> window;
+    sf::Event event;
 
-    vector<SnakeSection> snake;
+    sf::Clock deltaTimeClock;
+    float delta;
 
-    int snakeDirection;
-    deque<int> directionQueue; // queue for direction key presses
-    int speed;
-    int sectionsToAdd; // how many sections to add to the snake
-    int applesEatenThisLevel;
-    int applesEatenTotal;
-    unsigned long long int score;
-
-    Apple apple;
-
-    vector<Wall> wallSections;
-    int currentLevel;
-    int maxLevels;
-    vector<String> levels;
-
-    Font mainFont;
-    Text titleText;
-    Text applesEatenText;
-    Text currentLevelText;
-    Text scoreText;
-    Text gameOverText;
-    Text pressEnterText;
-
-    Time timeSinceLastMove;
-
-    int currentGameState;
-    int lastGameState; // For storing the last state the game was in when pausing.
+    void initWindow();
 
 public:
-    enum Direction { UP, RIGHT, DOWN, LEFT };
-    enum GameState { RUNNING, PAUSED, GAMEOVER };
     Engine();
+    virtual ~Engine() = default;
 
-    void input();
-    void addDirection(int newDirection);
-    void update();
-    void draw();
-
-    static void setupText(Text *textItem, const Font &font, const String &value, int size, Color colour);
-
-    void newSnake();
-    void addSnakeSection();
-
-    void moveApple();
-    void checkLevelFiles();
-    void loadLevel(int levelNumber);
-
-    void beginNextLevel();
-    void startTheGame();
-
-    void togglePause();
-
-    // The main loop will be in the run function
     void run();
+    void updateEvents();
+    void update();
+    void renderFrame();
 
+    void updateDeltaClock();
 };
-
-
-#endif //NIBBLES_01_ENGINE_HPP
