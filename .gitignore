@@ -37,3 +37,6 @@ build/
 
 # Compiled proto files
 *.pb.*
+
+# Logs dir
+logs/

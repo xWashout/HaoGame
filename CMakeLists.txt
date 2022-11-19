@@ -21,6 +21,7 @@ file(GLOB PROTOBUF_MODELS_INCLUDES "proto_files/*.pb.cc" "proto_files/*.hpp")
 
 add_executable(hao src/main.cpp src/engine.cpp headers/engine.hpp headers/state.hpp src/state.cpp headers/protobuf_wrapper.hpp src/protobuf_wrapper.cpp)
 
+include_directories(${CMAKE_SOURCE_DIR}/libs/)
 include_directories(headers /usr/include c:/SFML/include)
 
 set(SFML_ROOT c:/SFML)

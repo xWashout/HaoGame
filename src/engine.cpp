@@ -1,6 +1,7 @@
 #include "engine.hpp"
 
 #include <iostream>
+#include "spdlog/sinks/basic_file_sink.h"
 
 void Engine::initWindow()
 {
@@ -9,9 +10,24 @@ void Engine::initWindow()
     // this->window->setVerticalSyncEnabled(false); disabled by default
 }
 
+void Engine::initLogger()
+{
+    try 
+    {
+        logger = spdlog::basic_logger_mt("logger", "logs/logs.txt");
+        spdlog::set_default_logger(logger);
+        spdlog::flush_on(spdlog::level::info);
+    }
+    catch (const spdlog::spdlog_ex &ex)
+    {
+        std::cerr << "Log init failed: " << ex.what() << std::endl;
+    }
+}
+
 Engine::Engine() 
 {
     this->initWindow();
+    this->initLogger();
 }
 
 void Engine::run() 
@@ -53,8 +69,8 @@ void Engine::updateDeltaClock()
     // Update delta variable to measure how much time take execution of update and render function (frame update/render)
     this->delta = this->deltaTimeClock.restart().asSeconds();
 
-
-    // todo, add FMT, or logging system
+    // to many for spdlog
+    // spdlog::info("Frame render time: {}", this->delta);
     system("cls");
-    std::cout << this->delta;
+    std::cout << "Frame render time:" << this->delta;
 }
