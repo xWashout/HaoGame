@@ -3,7 +3,23 @@ project(hao)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(hao src/main.cpp src/engine.cpp headers/engine.hpp headers/state.hpp src/state.cpp)
+# GOOGLE PROTOCOL BUFFERS
+file(GLOB PROTOBUF_DEFINITION_FILES "${PROJECT_SOURCE_DIR}/proto_files/*.proto")
+set(PROTOBUF_INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto_files")
+set(PROTOBUF_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto_files")
+set (proto_command "protoc")
+
+foreach(file ${PROTOBUF_DEFINITION_FILES})
+    message(STATUS "Compiling proto file=${file}")
+    set (proto_args --proto_path=${PROTOBUF_INPUT_DIRECTORY} --cpp_out=${PROTOBUF_OUTPUT_DIRECTORY} ${file})
+    execute_process(COMMAND ${proto_command} ${proto_args}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    RESULT_VARIABLE proto_result)
+    message(STATUS "Proto compilation exit code=${proto_result}")
+endforeach()
+file(GLOB PROTOBUF_MODELS_INCLUDES "proto_files/*.pb.cc" "proto_files/*.hpp")
+
+add_executable(hao src/main.cpp src/engine.cpp headers/engine.hpp headers/state.hpp src/state.cpp headers/protobuf_wrapper.hpp src/protobuf_wrapper.cpp)
 
 include_directories(headers /usr/include c:/SFML/include)
 

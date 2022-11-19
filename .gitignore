@@ -34,3 +34,6 @@
 # Remove vscode and build dir
 build/
 .vscode/
+
+# Compiled proto files
+*.pb.*
