@@ -2,9 +2,11 @@
 
 #include <iostream>
 #include "spdlog/sinks/basic_file_sink.h"
+#include "game_state.hpp"
 
 void Engine::initWindow()
 {
+    // TODO: Make proto files to store config // create struct to store config
     this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(200, 200), "Sii Game");
     this->window->setFramerateLimit(120);
     // this->window->setVerticalSyncEnabled(false); disabled by default
@@ -24,10 +26,20 @@ void Engine::initLogger()
     }
 }
 
+void Engine::initStates()
+{
+    this->states.emplace(std::make_unique<GameState>(this->window));
+}
+
 Engine::Engine() 
 {
     this->initWindow();
     this->initLogger();
+    this->initStates();
+}
+
+Engine::~Engine()
+{
 }
 
 void Engine::run() 
@@ -54,11 +66,31 @@ void Engine::updateEvents()
 void Engine::update()
 {
     this->updateEvents();
+
+    if(!this->states.empty())
+    {
+        this->states.top()->update(this->delta);
+        if(this->states.top()->getQuit())
+        {
+            this->states.top()->endState();
+            this->states.pop();
+        }
+    }
+    else 
+    {
+        // End of application
+        this->window->close();
+    }
 }
 
 void Engine::renderFrame()
 {
     this->window->clear();
+
+    if(!this->states.empty())
+    {
+        this->states.top()->render();
+    }
 
     this->window->display();
 }
@@ -71,6 +103,6 @@ void Engine::updateDeltaClock()
 
     // to many for spdlog
     // spdlog::info("Frame render time: {}", this->delta);
-    system("cls");
-    std::cout << "Frame render time:" << this->delta;
+    //system("cls");
+    //std::cout << "Frame render time:" << this->delta;
 }

@@ -13,12 +13,15 @@ private:
     float delta;
     std::shared_ptr<spdlog::logger> logger;
 
+    std::stack<std::unique_ptr<State>> states;
+
     void initWindow();
     void initLogger();
+    void initStates();
 
 public:
     Engine();
-    virtual ~Engine() = default;
+    virtual ~Engine();
 
     void run();
     void updateEvents();
