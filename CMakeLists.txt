@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 project(hao)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES 0)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+
+find_package(Protobuf REQUIRED)
+find_package(SFML REQUIRED system window graphics)
+find_package(spdlog REQUIRED)
+
 # GOOGLE PROTOCOL BUFFERS
 file(GLOB PROTOBUF_DEFINITION_FILES "${PROJECT_SOURCE_DIR}/proto_files/*.proto")
 set(PROTOBUF_INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto_files")
@@ -20,6 +25,13 @@ endforeach()
 file(GLOB PROTOBUF_MODELS_INCLUDES "proto_files/*.pb.cc" "proto_files/*.hpp")
 # END GOOGLE PROTOCOL BUFFERS
 
+# include_directories(${CMAKE_SOURCE_DIR}/libs/)
+include_directories(${CMAKE_SOURCE_DIR}/game_states/)
+include_directories(${CMAKE_SOURCE_DIR}/entities/)
+include_directories(${CMAKE_SOURCE_DIR}/common/)
+include_directories(${CMAKE_SOURCE_DIR}/proto_files/)
+include_directories(headers /usr/include)
+
 add_executable(hao  src/main.cpp 
                     src/engine.cpp 
                     src/keybinds_config.cpp
@@ -28,28 +40,12 @@ add_executable(hao  src/main.cpp
                     entities/entity.cpp
                     proto_files/keybinds_config.pb.cc)
 
-include_directories(${CMAKE_SOURCE_DIR}/libs/)
-include_directories(${CMAKE_SOURCE_DIR}/game_states/)
-include_directories(${CMAKE_SOURCE_DIR}/entities/)
-include_directories(${CMAKE_SOURCE_DIR}/common/)
-include_directories(${CMAKE_SOURCE_DIR}/proto_files/)
-include_directories(headers /usr/include c:/SFML/include)
-include_directories(C:/protobuf/protobuf-3.21.9/src/)
+target_link_libraries(hao PUBLIC ${Protobuf_LIBRARIES})
+target_link_libraries(hao PUBLIC spdlog::spdlog)
 
-set(SFML_ROOT c:/SFML)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
-find_package(SFML REQUIRED system window graphics)
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(hao ${SFML_LIBRARIES})
+    target_link_libraries(hao PUBLIC ${SFML_LIBRARIES})
 endif()
 
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
-# Copy dlls to build
-if(WIN32)
-    file(GLOB BINARY_DEP_DLLS "${SFML_INCLUDE_DIR}/../bin/*.dll")
-    file(COPY ${BINARY_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
-    file(GLOB MINGW_DEP_DLLS "C:/mingw64/bin/*.dll")
-    file(COPY ${MINGW_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
-endif()
