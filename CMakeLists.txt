@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(hao)
 
 set(CMAKE_CXX_STANDARD 20)
-
+set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES 0)
 # GOOGLE PROTOCOL BUFFERS
 file(GLOB PROTOBUF_DEFINITION_FILES "${PROJECT_SOURCE_DIR}/proto_files/*.proto")
 set(PROTOBUF_INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto_files")
@@ -22,17 +22,19 @@ file(GLOB PROTOBUF_MODELS_INCLUDES "proto_files/*.pb.cc" "proto_files/*.hpp")
 
 add_executable(hao  src/main.cpp 
                     src/engine.cpp 
-                    headers/engine.hpp 
-                    headers/protobuf_wrapper.hpp 
-                    src/protobuf_wrapper.cpp
-                    game_states/state.hpp
+                    src/keybinds_config.cpp
                     game_states/state.cpp
-                    game_states/game_state.hpp
-                    game_states/game_state.cpp)
+                    game_states/game_state.cpp
+                    entities/entity.cpp
+                    proto_files/keybinds_config.pb.cc)
 
 include_directories(${CMAKE_SOURCE_DIR}/libs/)
 include_directories(${CMAKE_SOURCE_DIR}/game_states/)
+include_directories(${CMAKE_SOURCE_DIR}/entities/)
+include_directories(${CMAKE_SOURCE_DIR}/common/)
+include_directories(${CMAKE_SOURCE_DIR}/proto_files/)
 include_directories(headers /usr/include c:/SFML/include)
+include_directories(C:/protobuf/protobuf-3.21.9/src/)
 
 set(SFML_ROOT c:/SFML)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")

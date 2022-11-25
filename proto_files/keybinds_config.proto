@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message KeyboardBinds
+{
+  uint32 MoveUp = 1;
+  uint32 MoveDown = 2;
+  uint32 MoveLeft = 3;
+  uint32 MoveRight = 4;
+  uint32 Close = 5;
+}

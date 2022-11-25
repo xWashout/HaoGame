@@ -1,4 +1,5 @@
 #include "state.hpp"
+#include "keybinds.hpp"
 
 State::State(std::shared_ptr<sf::RenderWindow> window)
 {
@@ -7,7 +8,7 @@ State::State(std::shared_ptr<sf::RenderWindow> window)
 
 void State::checkForQuit()
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    if(sf::Keyboard::isKeyPressed(Key::Close))
     {
         this->quit = true;
     }

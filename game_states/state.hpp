@@ -1,19 +1,12 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
-#include "SFML/Network.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Audio.hpp"
-
-#include <vector>
-#include <map>
-#include <stack>
-#include <memory>
+#include "entity.hpp"
 
 class State
 {
-private: 
+private:
+
+protected: 
     std::vector<sf::Texture> textures;
     std::shared_ptr<sf::RenderWindow> window;
     bool quit = false;
@@ -29,5 +22,5 @@ public:
     // TODO refactor
     bool getQuit() const; 
     virtual void checkForQuit();
-    virtual void updateKeybinds(const float& delta) = 0;
+    virtual void updateInput(const float& delta) = 0;
 };

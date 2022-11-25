@@ -12,7 +12,6 @@ private:
     sf::Clock deltaTimeClock;
     float delta;
     std::shared_ptr<spdlog::logger> logger;
-
     std::stack<std::unique_ptr<State>> states;
 
     void initWindow();

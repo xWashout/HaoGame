@@ -40,3 +40,6 @@ build/
 
 # Logs dir
 logs/
+
+# Doxygen
+doc/

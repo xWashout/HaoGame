@@ -7,7 +7,7 @@
 void Engine::initWindow()
 {
     // TODO: Make proto files to store config // create struct to store config
-    this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(200, 200), "Sii Game");
+    this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 800), "Sii Game");
     this->window->setFramerateLimit(120);
     // this->window->setVerticalSyncEnabled(false); disabled by default
 }
