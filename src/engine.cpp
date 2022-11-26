@@ -24,7 +24,7 @@ void Engine::initLogger()
     {
         std::cerr << "Log init failed: " << ex.what() << std::endl;
     }
-    spdlog::info("{} - Init logger success", __PRETTY_FUNCTION__);
+    spdlog::info("{}: Init logger success", __PRETTY_FUNCTION__);
 }
 
 void Engine::initStates()

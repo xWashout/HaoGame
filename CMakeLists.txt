@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(hao)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
@@ -8,7 +9,7 @@ find_package(Protobuf REQUIRED)
 find_package(SFML REQUIRED system window graphics)
 find_package(spdlog REQUIRED)
 
-# GOOGLE PROTOCOL BUFFERS
+# GOOGLE PROTOCOL BUFFERS - PROTO FILES COMPILATION
 file(GLOB PROTOBUF_DEFINITION_FILES "${PROJECT_SOURCE_DIR}/proto_files/*.proto")
 set(PROTOBUF_INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto_files")
 set(PROTOBUF_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto_files")
@@ -23,9 +24,8 @@ foreach(file ${PROTOBUF_DEFINITION_FILES})
     message(STATUS "Proto compilation exit code=${proto_result}")
 endforeach()
 file(GLOB PROTOBUF_MODELS_INCLUDES "proto_files/*.pb.cc" "proto_files/*.hpp")
-# END GOOGLE PROTOCOL BUFFERS
+# END OF GOOGLE PROTOCOL FILES COMPILATION
 
-# include_directories(${CMAKE_SOURCE_DIR}/libs/)
 include_directories(${CMAKE_SOURCE_DIR}/game_states/)
 include_directories(${CMAKE_SOURCE_DIR}/entities/)
 include_directories(${CMAKE_SOURCE_DIR}/common/)

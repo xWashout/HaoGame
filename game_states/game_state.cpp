@@ -2,7 +2,7 @@
 #include <iostream>
 
 GameState::GameState(std::shared_ptr<sf::RenderWindow> window) 
-    : State(window)
+    : State(window), keybindsConfig("/home/pkups/HaoGame/build/keyconfig")
 {}
 
 void GameState::update(const float& delta)
